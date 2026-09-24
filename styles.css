@@ -9,3 +9,17 @@ body {
     align-items: center;
     height: 100vh;
 }
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #222;
+    color: white;
+}
+
+h1 {
+    font-size: 50px;
+}
