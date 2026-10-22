@@ -1,53 +1,268 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi presentación</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Panel de Proyectos del Equipo</title>
+    <!-- Tailwind CSS desde CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Fuente Inter y Phosphor Icons para íconos elegantes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Efectos de brillo en los bordes */
+        .card-glow {
+            position: relative;
+        }
+        .card-glow::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6, #ec4899);
+            border-radius: 1rem;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .card-glow:hover::before {
+            opacity: 1;
+        }
+    </style>
 </head>
-<body>
-    <header class="encabezado">
-        <div class="avatar">L</div>
-        <h1>Hola, mi nombre es Lizeth</h1>
-        <p class="subtitulo">Estudiante de Desarrollo de Software</p>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-brand-500 selection:text-white relative overflow-x-hidden">
+
+    <!-- Fondo de gradientes flotantes estilo Glow -->
+    <div class="fixed top-0 left-1/4 w-96 h-96 bg-brand-600/10 rounded-full blur-3xl pointer-events-none -z-10 animate-pulse-slow"></div>
+    <div class="fixed bottom-0 right-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none -z-10 animate-pulse-slow"></div>
+
+    <!-- Encabezado / Header -->
+    <header class="border-b border-slate-800/80 bg-slate-900/50 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="p-2.5 bg-gradient-to-br from-brand-500 to-indigo-600 rounded-xl shadow-lg shadow-brand-500/20">
+                    <i class="ph-bold ph-squares-four text-2xl text-white"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-white">Portal de Proyectos</h1>
+                    <p class="text-xs text-slate-400">Equipo de Desarrollo Web</p>
+                </div>
+            </div>
+
+            <!-- Buscador en tiempo real -->
+            <div class="relative w-full sm:w-72">
+                <i class="ph-bold ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg"></i>
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Buscar colaborador o rol..." 
+                    class="w-full pl-10 pr-4 py-2 bg-slate-900/80 border border-slate-700/60 rounded-xl text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all shadow-inner"
+                >
+            </div>
+        </div>
     </header>
 
-    <main class="contenedor">
-        <section class="sobre-mi">
-            <h2>Sobre mí</h2>
-            <p>Soy una chica muy tranquila, callada, soy estudiante y tambien trabajo.</p>
-        </section>
+    <!-- Contenido Principal -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-1 w-full">
+        <!-- Subtítulo e Instrucción -->
+        <div class="text-center max-w-2xl mx-auto mb-12">
+            <span class="px-3 py-1 bg-brand-500/10 text-brand-400 text-xs font-semibold rounded-full border border-brand-500/20 uppercase tracking-wider">
+                Integración de Ramas
+            </span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-3 tracking-tight">
+                Portafolio del Equipo
+            </h2>
+            <p class="text-slate-400 text-sm sm:text-base mt-2">
+                Selecciona la tarjeta de cualquier colaborador para ingresar a su repositorio o carpeta individual.
+            </p>
+        </div>
 
-        <section>
-            <h2>Mis gustos</h2>
-            <div class="rejilla">
-                <article class="recuadro">
-                    <span class="icono">🍕</span>
-                    <h3>Comida</h3>
-                    <p>El pozole y la pizza</p>
-                </article>
+        <!-- Grid de Cards de los Colaboradores -->
+        <div id="cardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            <!-- Las tarjetas se generan dinámicamente desde el array JS de abajo -->
+        </div>
 
-                <article class="recuadro">
-                    <span class="icono">🎵</span>
-                    <h3>Música</h3>
-                    <p>Me gusta mucho la musica de BTS</p>
-                </article>
-
-                <article class="recuadro">
-                    <span class="icono">🎬</span>
-                    <h3>Series y películas</h3>
-                    <p>Me gustan las peliculas de terror, suspenso y los K-dramas</p>
-                </article>
-
-                <article class="recuadro">
-                    <span class="icono">🎨</span>
-                    <h3>Pasatiempos</h3>
-                    <p>Uno de mis pasatiemos favoritos es dibujar y jugar baloncesto</p>
-                </article>
-            </div>
-        </section>
+        <!-- Mensaje cuando no hay resultados de búsqueda -->
+        <div id="noResults" class="hidden text-center py-16">
+            <i class="ph-duotone ph-user-minus text-5xl text-slate-600 mb-3 block"></i>
+            <h3 class="text-lg font-medium text-slate-300">No se encontraron colaboradores</h3>
+            <p class="text-sm text-slate-500 mt-1">Intenta buscar con otros términos.</p>
+        </div>
     </main>
-    
+
+    <!-- Pie de página / Footer -->
+    <footer class="border-t border-slate-800/60 bg-slate-950/80 py-6 text-center text-xs text-slate-500">
+        <p>© 2026 Panel de Colaboradores. Proyecto final integrado con Git & GitHub.</p>
+    </footer>
+
+    <!-- Script principal de JS con la configuración editable -->
+    <script>
+        /**
+         * CONFIGURACIÓN DE COLABORADORES
+         * Edita los datos aquí para cambiar nombres, roles, carpetas o URLs.
+         */
+        const colaboradores = [
+            {
+                id: 1,
+                nombre: "Karen", // Cambia por el nombre real si deseas
+                rol: "Frontend Developer",
+                avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Karen&backgroundColor=b6e3f4",
+                // Ruta relativa a la carpeta del colaborador o URL externa
+                rutaProyecto: "Karen/index.html", 
+                skills: ["HTML", "CSS", "JavaScript"],
+                colorGlow: "from-blue-500 to-indigo-600"
+            },
+            {
+                id: 2,
+                nombre: "Lizeth",
+                rol: "UI/UX Designer",
+                avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Lizeth&backgroundColor=ffdfbf",
+                rutaProyecto: "Lizeth/index.html",
+                skills: ["Figma", "Tailwind", "CSS"],
+                colorGlow: "from-purple-500 to-pink-500"
+            },
+            {
+                id: 3,
+                nombre: "Zabdiel",
+                rol: "Backend Developer",
+                avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Zabdiel&backgroundColor=c0aede",
+                rutaProyecto: "Zabdiel/index.html",
+                skills: ["Git", "JS", "Node.js"],
+                colorGlow: "from-emerald-500 to-teal-600"
+            },
+            {
+                id: 4,
+                nombre: "Juan",
+                rol: "Full Stack Dev",
+                avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Juan&backgroundColor=d1d4f9",
+                rutaProyecto: "Juan/index.html",
+                skills: ["React", "HTML", "Git"],
+                colorGlow: "from-amber-500 to-orange-600"
+            },
+            {
+                id: 5,
+                nombre: "Amir",
+                rol: "QA / Tester",
+                avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Amir&backgroundColor=ffd5dc",
+                rutaProyecto: "Amir/index.html",
+                skills: ["Testing", "CSS", "Docs"],
+                colorGlow: "from-cyan-500 to-blue-600"
+            }
+        ];
+
+        // Función para renderizar las tarjetas en la página
+        function renderCards(items) {
+            const grid = document.getElementById('cardsGrid');
+            const noResults = document.getElementById('noResults');
+
+            grid.innerHTML = '';
+
+            if (items.length === 0) {
+                noResults.classList.remove('hidden');
+                return;
+            } else {
+                noResults.classList.add('hidden');
+            }
+
+            items.forEach(c => {
+                const card = document.createElement('div');
+                card.className = "card-glow group relative bg-slate-900/70 border border-slate-800 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-brand-500/10 flex flex-col justify-between";
+
+                card.innerHTML = `
+                    <div>
+                        <!-- Encabezado de la Tarjeta (Avatar + Estado) -->
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="relative">
+                                <img src="${c.avatar}" alt="${c.nombre}" class="w-16 h-16 rounded-2xl bg-slate-800 p-1 border border-slate-700/50 shadow-inner group-hover:scale-105 transition-transform duration-300">
+                                <span class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-slate-900 rounded-full" title="Activo"></span>
+                            </div>
+                            <span class="text-xs font-mono px-2.5 py-1 bg-slate-800 text-slate-400 rounded-lg border border-slate-700/50">
+                                ID: 0${c.id}
+                            </span>
+                        </div>
+
+                        <!-- Información del Colaborador -->
+                        <h3 class="text-xl font-bold text-white group-hover:text-brand-400 transition-colors">
+                            ${c.nombre}
+                        </h3>
+                        <p class="text-xs font-medium text-slate-400 mt-0.5">
+                            ${c.rol}
+                        </p>
+
+                        <!-- Etiquetas de habilidades / tecnologías -->
+                        <div class="flex flex-wrap gap-1.5 mt-4 mb-6">
+                            ${c.skills.map(s => `<span class="text-[11px] font-medium px-2 py-0.5 bg-slate-800/80 text-slate-300 rounded-md border border-slate-700/40">${s}</span>`).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Botón de Navegación -->
+                    <button 
+                        onclick="navegarA('${c.rutaProyecto}')" 
+                        class="w-full py-2.5 px-4 bg-slate-800 hover:bg-gradient-to-r hover:${c.colorGlow} text-slate-200 hover:text-white font-semibold text-sm rounded-xl border border-slate-700/60 hover:border-transparent transition-all duration-300 flex items-center justify-center gap-2 shadow-sm active:scale-[0.98]"
+                    >
+                        <span>Ver Proyecto</span>
+                        <i class="ph-bold ph-arrow-right text-base group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        // Función encargada de redirigir a la carpeta o URL del colaborador
+        function navegarA(url) {
+            if (!url || url.trim() === '') {
+                alert('La ruta del proyecto aún no se ha configurado.');
+                return;
+            }
+            // Redirige en la misma pestaña a la carpeta del integrante
+            window.location.href = url;
+        }
+
+        // Filtrado en tiempo real con el buscador
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            const filtrados = colaboradores.filter(c => 
+                c.nombre.toLowerCase().includes(query) || 
+                c.rol.toLowerCase().includes(query) ||
+                c.skills.some(s => s.toLowerCase().includes(query))
+            );
+            renderCards(filtrados);
+        });
+
+        // Cargar las tarjetas al iniciar la página
+        window.addEventListener('DOMContentLoaded', () => {
+            renderCards(colaboradores);
+        });
+    </script>
 </body>
 </html>
