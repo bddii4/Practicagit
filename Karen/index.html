@@ -18,8 +18,6 @@
       <svg width="20" height="20" style="left:44%;top:0" viewBox="0 0 24 24"><path d="M12 2v6M12 16v6M2 12h6M16 12h6" stroke="var(--lilac)" stroke-width="2" stroke-linecap="round"/></svg>
     </div>
 
-    <button class="theme-toggle" id="themeBtn" type="button" aria-label="Cambiar tema">modo: auto</button>
-
     <header class="top">
       <div class="avatar" id="avatar"></div>
       <h1 class="name" id="nombre"></h1>
@@ -30,18 +28,11 @@
     <h2 class="section-title">Lo que me gusta hacer</h2>
     <div class="grid" id="tarjetas"></div>
 
-    <h2 class="section-title">Con lo que trabajo</h2>
-    <div class="pills" id="pills"></div>
-
     <footer class="contact" id="contacto"></footer>
 
-    <p class="edit-note">✏️ Para personalizar esta tarjeta, edita el objeto DATA al inicio de la etiqueta &lt;script&gt; al final del archivo.</p>
   </div>
 
 <script>
-  // ─────────────────────────────────────────────
-  // ✏️ EDITA AQUÍ TUS DATOS — es lo único que necesitas cambiar
-  // ─────────────────────────────────────────────
   const DATA = {
     nombre: "Karen Ramírez",
     carrera: "Desarrollo de Software Multiplataforma",
@@ -50,7 +41,7 @@
       { titulo: "Dibujo", desc: "Bocetos, retratos y todo lo que se pueda hacer con lápiz y papel.", icon: "pencil", color: "coral" },
       { titulo: "Pintura", desc: "Acuarela, acrílico y explorar colores nuevos.", icon: "brush", color: "sky" },
       { titulo: "Manualidades", desc: "Proyectos DIY, tejido, recortes y mucho pegamento.", icon: "craft", color: "sage" },
-      { titulo: "Desarrollo Multiplataforma", desc: "Apps para Android, iOS y web desde una sola base de código.", icon: "devices", color: "lilac" }
+      { titulo: "Desarrollo Multiplataforma", desc: "Apps desde una sola base de código.", icon: "devices", color: "lilac" }
     ],
     stack: ["Kotlin Multiplatform", "Flutter", "Android", "iOS", "Web"],
     contacto: {
