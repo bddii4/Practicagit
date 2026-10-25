@@ -2,105 +2,254 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Carta de presentación</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Portal con los proyectos individuales del equipo de desarrollo web.">
+<title>Portal de Proyectos · Equipo de Desarrollo Web</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧩</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b1120;
+    --surface: #131c31;
+    --surface-2: #1a2540;
+    --line: #26324f;
+    --text: #e8edf7;
+    --muted: #9aa8c4;
+    --brand: #5b9bff;
+    --focus: #8bb8ff;
+    color-scheme: dark;
+  }
+  :root[data-theme="light"] {
+    --bg: #f4f6fb;
+    --surface: #ffffff;
+    --surface-2: #eef2fa;
+    --line: #d8dfee;
+    --text: #141b2d;
+    --muted: #55627f;
+    --brand: #2563eb;
+    --focus: #2563eb;
+    color-scheme: light;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; min-height: 100vh; display: flex; flex-direction: column;
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.5;
+  }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 6px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* Encabezado */
+  header { border-bottom: 1px solid var(--line); background: var(--bg); position: sticky; top: 0; z-index: 10; }
+  .bar { max-width: 1120px; margin: 0 auto; padding: 14px 20px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .brand { display: flex; align-items: center; gap: 12px; margin-right: auto; }
+  .logo { width: 38px; height: 38px; border-radius: 10px; background: var(--brand); display: grid; place-items: center; color: #fff; }
+  .brand h1 { font-size: 1.05rem; margin: 0; font-weight: 700; letter-spacing: -.01em; }
+  .brand p { margin: 0; font-size: .78rem; color: var(--muted); }
+  .icon-btn {
+    width: 38px; height: 38px; display: grid; place-items: center; cursor: pointer;
+    background: var(--surface); color: var(--text); border: 1px solid var(--line); border-radius: 10px;
+  }
+  .icon-btn:hover { background: var(--surface-2); }
+
+  /* Contenido */
+  main { flex: 1; width: 100%; max-width: 1120px; margin: 0 auto; padding: 48px 20px 64px; }
+  .intro { max-width: 620px; margin-bottom: 32px; }
+  .intro h2 { font-size: clamp(1.9rem, 4.5vw, 2.8rem); line-height: 1.1; letter-spacing: -.03em; font-weight: 800; margin: 0 0 12px; }
+  .intro p { margin: 0; color: var(--muted); max-width: 56ch; }
+
+  /* Herramientas: búsqueda + filtros */
+  .tools { display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px; }
+  .search { position: relative; max-width: 440px; }
+  .search svg { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+  .search input {
+    width: 100%; padding: 11px 40px 11px 40px; font: inherit; font-size: .92rem;
+    background: var(--surface); color: var(--text); border: 1px solid var(--line); border-radius: 12px;
+  }
+  .search input::placeholder { color: var(--muted); }
+  .search input:focus { outline: 2px solid var(--focus); outline-offset: 1px; border-color: transparent; }
+  .search kbd {
+    position: absolute; right: 11px; top: 50%; transform: translateY(-50%);
+    font: inherit; font-size: .72rem; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 1px 7px;
+  }
+  .search input:not(:placeholder-shown) ~ kbd { display: none; }
+  .clear { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); width: 30px; height: 30px; border: 0; background: none; color: var(--muted); cursor: pointer; border-radius: 8px; display: none; place-items: center; }
+  .search input:not(:placeholder-shown) ~ .clear { display: grid; }
+  .clear:hover { color: var(--text); background: var(--surface-2); }
+
+  /* Tarjetas */
+  .grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); list-style: none; padding: 0; margin: 0; }
+  .card {
+    --accent: var(--brand);
+    position: relative; display: flex; flex-direction: column; height: 100%;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 22px;
+    border-top: 3px solid var(--accent);
+    color: inherit; text-decoration: none; cursor: pointer;
+    transition: border-color .2s, transform .2s;
+  }
+  .card:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .card-head { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+  .avatar {
+    width: 60px; height: 60px; border-radius: 14px; flex: none; overflow: hidden;
+    background: var(--surface-2); display: grid; place-items: center;
+    font-weight: 700; font-size: 1.6rem; color: var(--accent);
+  }
+  .card h3 { margin: 0; font-size: 1.2rem; font-weight: 700; letter-spacing: -.01em; }
+  .go {
+    margin-top: auto; display: flex; align-items: center; justify-content: space-between;
+    padding-top: 14px; border-top: 1px solid var(--line); font-weight: 600; font-size: .9rem;
+  }
+  .go svg { transition: transform .2s; color: var(--accent); }
+  .card:hover .go svg { transform: translateX(4px); }
+
+  .empty { display: none; text-align: center; padding: 56px 16px; border: 1px dashed var(--line); border-radius: 16px; }
+  .empty.show { display: block; }
+  .empty h3 { margin: 0 0 6px; font-size: 1.05rem; }
+  .empty p { margin: 0 0 16px; color: var(--muted); font-size: .9rem; }
+  .empty button { font: inherit; font-weight: 600; font-size: .88rem; padding: 8px 16px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--text); cursor: pointer; }
+  .empty button:hover { background: var(--surface-2); }
+
+  footer { border-top: 1px solid var(--line); padding: 22px 20px; text-align: center; font-size: .8rem; color: var(--muted); }
+
+  /* Una sola animación de entrada, respetando preferencias del sistema */
+  @media (prefers-reduced-motion: no-preference) {
+    .grid.first-load .card { animation: in .5s both; animation-delay: calc(var(--i) * 70ms); }
+    @keyframes in { from { opacity: 0; transform: translateY(10px); } }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } html { scroll-behavior: auto; } }
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="doodles">
-      <svg width="40" height="40" style="left:6%;top:10px" viewBox="0 0 40 40"><path d="M4 20c4-10 12-14 18-8s2 16-8 16-14-8-10-8z" fill="var(--sage-soft)"/></svg>
-      <svg width="30" height="30" style="right:10%;top:0" viewBox="0 0 24 24"><path d="M12 2l2.2 6.8H21l-5.6 4 2.2 6.8L12 15.6 6.4 19.6l2.2-6.8L3 8.8h6.8z" fill="var(--mustard-soft)"/></svg>
-      <svg width="26" height="26" style="left:16%;top:120px" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="var(--sky-soft)"/></svg>
-      <svg width="34" height="34" style="right:6%;top:150px" viewBox="0 0 24 24"><path d="M12 21s-8-4.6-8-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.4-8 11-8 11z" fill="var(--coral-soft)"/></svg>
-      <svg width="20" height="20" style="left:44%;top:0" viewBox="0 0 24 24"><path d="M12 2v6M12 16v6M2 12h6M16 12h6" stroke="var(--lilac)" stroke-width="2" stroke-linecap="round"/></svg>
+
+<header>
+  <div class="bar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      </div>
+      <div>
+        <h1>Portal de Proyectos</h1>
+        <p>Equipo de Desarrollo Web</p>
+      </div>
     </div>
+    <button class="icon-btn" id="themeBtn" type="button" aria-label="Cambiar entre tema claro y oscuro">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+  </div>
+</header>
 
-    <button class="theme-toggle" id="themeBtn" type="button" aria-label="Cambiar tema">modo: auto</button>
+<main>
+  <section class="intro">
+    <h2>Portafolio del equipo</h2>
+    <p>Elige a un colaborador para abrir su proyecto.</p>
+  </section>
 
-    <header class="top">
-      <div class="avatar" id="avatar"></div>
-      <h1 class="name" id="nombre"></h1>
-      <span class="role-badge" id="rol"></span>
-      <p class="bio" id="bio"></p>
-    </header>
-
-    <h2 class="section-title">Lo que me gusta hacer</h2>
-    <div class="grid" id="tarjetas"></div>
-
-    <h2 class="section-title">Con lo que trabajo</h2>
-    <div class="pills" id="pills"></div>
-
-    <footer class="contact" id="contacto"></footer>
-
-    <p class="edit-note">✏️ Para personalizar esta tarjeta, edita el objeto DATA al inicio de la etiqueta &lt;script&gt; al final del archivo.</p>
+  <div class="tools">
+    <div class="search" role="search">
+      <label for="searchInput" class="sr-only">Buscar colaborador</label>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="search" id="searchInput" placeholder="Buscar colaborador" autocomplete="off">
+      <kbd aria-hidden="true">/</kbd>
+      <button type="button" class="clear" id="clearBtn" aria-label="Borrar búsqueda">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
   </div>
 
+  <p class="sr-only" id="status" role="status" aria-live="polite"></p>
+  <ul class="grid first-load" id="grid"></ul>
+
+  <div class="empty" id="empty">
+    <h3>Nadie coincide con tu búsqueda</h3>
+    <p>Prueba con otro nombre.</p>
+    <button type="button" id="resetBtn">Borrar búsqueda</button>
+  </div>
+</main>
+
+<footer>
+  <p>© <span id="year">2026</span> Equipo de Desarrollo Web · Proyecto final con Git y GitHub</p>
+</footer>
+
 <script>
-  // ─────────────────────────────────────────────
-  // ✏️ EDITA AQUÍ TUS DATOS — es lo único que necesitas cambiar
-  // ─────────────────────────────────────────────
-  const DATA = {
-    nombre: "Karen Ramírez",
-    carrera: "Desarrollo de Software Multiplataforma",
-    bio: "Me encanta crear con las manos y con el código: dibujo, pinto, hago manualidades y construyo apps que funcionan en cualquier dispositivo.",
-    tarjetas: [
-      { titulo: "Dibujo", desc: "Bocetos, retratos y todo lo que se pueda hacer con lápiz y papel.", icon: "pencil", color: "coral" },
-      { titulo: "Pintura", desc: "Acuarela, acrílico y explorar colores nuevos.", icon: "brush", color: "sky" },
-      { titulo: "Manualidades", desc: "Proyectos DIY, tejido, recortes y mucho pegamento.", icon: "craft", color: "sage" },
-      { titulo: "Desarrollo Multiplataforma", desc: "Apps para Android, iOS y web desde una sola base de código.", icon: "devices", color: "lilac" }
-    ],
-    stack: ["Kotlin Multiplatform", "Flutter", "Android", "iOS", "Web"],
-    contacto: {
-      "Email": "tu@email.com",
-      "GitHub": "github.com/tuusuario",
-      "LinkedIn": "linkedin.com/in/tuusuario"
-    }
-  };
-  // ─────────────────────────────────────────────
+  const colaboradores = [
+    { nombre: "Karen",   ruta: "Karen/index.html",   color: "#5b9bff" },
+    { nombre: "Lizeth",  ruta: "Lizeth/index.html",  color: "#c084fc" },
+    { nombre: "Zabdiel", ruta: "Zabdiel/index.html", color: "#34d399" },
+    { nombre: "Juan",    ruta: "Juan/indexjuan.html",    color: "#fbbf24" },
+    { nombre: "Amir",    ruta: "Amir/indexamir.html",    color: "#22d3ee" }
+  ];
 
-  const ICONS = {
-    pencil: '<svg viewBox="0 0 24 24" fill="none" stroke="#B4472E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3l7 7-9.5 9.5H4V12.5L14 3z"/><path d="M12.5 4.5l7 7"/></svg>',
-    brush: '<svg viewBox="0 0 24 24" fill="none" stroke="#2E5670" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 15c-2 0-3.5 1.5-3.5 3.5S4 21 3 21c1.8 0 4-1 4-3.5"/><path d="M9 15l9-9c1-1 2.5-1 3 0 .5 1 0 2-1 3l-9 9-2-3z"/></svg>',
-    craft: '<svg viewBox="0 0 24 24" fill="none" stroke="#3E6B3C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="6" r="2.3"/><circle cx="7" cy="18" r="2.3"/><path d="M20 5L9 12l11 7"/></svg>',
-    devices: '<svg viewBox="0 0 24 24" fill="none" stroke="#5C4E8C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="13" height="9.5" rx="1.4"/><path d="M6 17.5h5"/><rect x="17" y="8" width="5" height="10" rx="1.2"/></svg>'
-  };
-  const SOFT = { coral: 'var(--coral-soft)', sky: 'var(--sky-soft)', sage: 'var(--sage-soft)', lilac: 'var(--lilac-soft)' };
+  const $ = id => document.getElementById(id);
+  const norm = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const safeGet = k => { try { return localStorage.getItem(k); } catch { return null; } };
+  const safeSet = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
 
-  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+  const state = { query: "" };
+  const grid = $("grid"), input = $("searchInput");
 
-  document.getElementById('nombre').textContent = DATA.nombre;
-  document.getElementById('rol').textContent = DATA.carrera;
-  document.getElementById('bio').textContent = DATA.bio;
-  document.getElementById('avatar').textContent = DATA.nombre.trim().split(/\s+/).slice(0,2).map(function(w){return w[0] || '';}).join('').toUpperCase();
+  /* ---------- Render ---------- */
+  function avatarHTML(c) {
+    return `<div class="avatar" aria-hidden="true">${esc(c.nombre.charAt(0).toUpperCase())}</div>`;
+  }
 
-  document.getElementById('tarjetas').innerHTML = DATA.tarjetas.map(function(t){
-    return '<div class="card">' +
-      '<div class="badge" style="background:' + SOFT[t.color] + '">' + (ICONS[t.icon] || '') + '</div>' +
-      '<h3>' + esc(t.titulo) + '</h3><p>' + esc(t.desc) + '</p></div>';
-  }).join('');
+  function render() {
+    const q = norm(state.query);
+    const lista = colaboradores.filter(c => {
+      return !q || norm(c.nombre).includes(q);
+    });
 
-  document.getElementById('pills').innerHTML = DATA.stack.map(function(s){
-    return '<span class="pill">' + esc(s) + '</span>';
-  }).join('');
+    grid.innerHTML = lista.map((c, i) => `
+      <li>
+        <a class="card" href="${esc(c.ruta)}" style="--accent:${esc(c.color)};--i:${i}">
+          <div class="card-head">
+            ${avatarHTML(c)}
+            <h3>${esc(c.nombre)}</h3>
+          </div>
+          <div class="go"><span>Ver proyecto de ${esc(c.nombre)}</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </div>
+        </a>
+      </li>`).join("");
 
-  document.getElementById('contacto').innerHTML = Object.entries(DATA.contacto).map(function(e){
-    var href = e[0].toLowerCase() === 'email' ? 'mailto:' + e[1] : 'https://' + e[1];
-    return '<a href="' + href + '" target="_blank" rel="noopener">' + esc(e[0]) + '</a>';
-  }).join('');
+    const n = lista.length;
+    const texto = `${n} de ${colaboradores.length} colaboradores`;
+    $("status").textContent = n ? texto : "Sin resultados";
+    $("empty").classList.toggle("show", n === 0);
+    grid.hidden = n === 0;
+  }
 
-  var themeBtn = document.getElementById('themeBtn');
-  var states = ['auto', 'light', 'dark'];
-  var state = 0;
-  themeBtn.addEventListener('click', function(){
-    state = (state + 1) % states.length;
-    var mode = states[state];
-    if (mode === 'auto') document.documentElement.removeAttribute('data-theme');
-    else document.documentElement.setAttribute('data-theme', mode);
-    themeBtn.textContent = 'modo: ' + mode;
+  /* ---------- Eventos ---------- */
+  input.addEventListener("input", e => {
+    state.query = e.target.value;
+    grid.classList.remove("first-load"); // la animación de entrada solo ocurre una vez
+    render();
   });
+  $("clearBtn").addEventListener("click", () => { input.value = ""; state.query = ""; render(); input.focus(); });
+  $("resetBtn").addEventListener("click", () => { input.value = ""; state.query = ""; render(); input.focus(); });
+
+  // Atajo: "/" enfoca el buscador, Escape lo limpia
+  document.addEventListener("keydown", e => {
+    const escribiendo = /^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName);
+    if (e.key === "/" && !escribiendo) { e.preventDefault(); input.focus(); }
+    if (e.key === "Escape" && document.activeElement === input) $("clearBtn").click();
+  });
+
+  /* ---------- Tema claro / oscuro ---------- */
+  const root = document.documentElement;
+  const temaInicial = safeGet("tema") || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+  root.dataset.theme = temaInicial;
+  $("themeBtn").addEventListener("click", () => {
+    const nuevo = root.dataset.theme === "light" ? "dark" : "light";
+    root.dataset.theme = nuevo;
+    safeSet("tema", nuevo);
+  });
+
+  $("year").textContent = new Date().getFullYear();
+  render();
 </script>
 </body>
 </html>
