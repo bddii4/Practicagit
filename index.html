@@ -174,18 +174,14 @@
 </footer>
 
 <script>
-  /* ============================================================
-     CONFIGURACIÓN: edita aquí nombres, roles, carpetas y colores
-     ============================================================ */
   const colaboradores = [
     { nombre: "Karen",   ruta: "Karen/index.html",   color: "#5b9bff" },
     { nombre: "Lizeth",  ruta: "Lizeth/index.html",  color: "#c084fc" },
     { nombre: "Zabdiel", ruta: "Zabdiel/index.html", color: "#34d399" },
-    { nombre: "Juan",    ruta: "Juan/index.html",    color: "#fbbf24" },
-    { nombre: "Amir",    ruta: "Amir/index.html",    color: "#22d3ee" }
+    { nombre: "Juan",    ruta: "Juan/indexjuan.html",    color: "#fbbf24" },
+    { nombre: "Amir",    ruta: "Amir/indexamir.html",    color: "#22d3ee" }
   ];
 
-  /* ---------- Utilidades ---------- */
   const $ = id => document.getElementById(id);
   const norm = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
