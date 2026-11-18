@@ -1,1 +1,24 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+    --paper: #FBF4E8;
+    --card: #FFFFFF;
+    --ink: #3A3226;
+    --sub: #7A7061;
+    --coral: #F2967E;
+    --coral-soft: #FDE4DC;
+    --sky: #7FB8D9;
+    --sky-soft: #E0F0F7;
+    --sage: #8CB88A;
+    --sage-soft: #E6F1E2;
+    --mustard: #E8B84B;
+    --mustard-soft: #FBEDCB;
+    --lilac: #A79BD1;
+    --lilac-soft: #EDE9F8;
+    --rule: rgba(58,50,38,0.10);
+  }
+
+  body {
+    margin: 0;
+    background: var(--paper) !important;
+    color: var(--ink);
+    font-family: 'Nunito', ui-sans-serif, system-ui, sans-serif;
+  }
