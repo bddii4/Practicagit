@@ -3,6 +3,7 @@ version: '3.8'
 services:
   app-angular:
     build: .
+    container_name: angular-practica-equipo
     ports:
       - "8080:80"
     restart: always
