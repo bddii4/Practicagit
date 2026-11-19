@@ -1,9 +1,6 @@
-version: '3.8'
-
 services:
   app-angular:
-    build: .
-    container_name: angular-practica-equipo
+    image: mi-practica-docker-app-angular:latest
+    container_name: angular-practica
     ports:
       - "8080:80"
-    restart: always
