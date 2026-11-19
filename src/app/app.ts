@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Lizeth } from './lizeth/lizeth';
+import { Juan } from './juan/juan';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, Lizeth],
+  imports: [CommonModule, Lizeth, Juan],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

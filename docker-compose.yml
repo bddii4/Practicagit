@@ -1,8 +1,8 @@
-version: '3.8'
-
 services:
   app-angular:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: angular-practica-equipo
     ports:
       - "8080:80"

@@ -1,24 +1,27 @@
-# Usamos Node para compilar la aplicación de Angular
-FROM node:18-alpine AS build
+# ETAPA 1: Construcción de Angular
+FROM node:22-alpine AS build
+
 WORKDIR /app
 
-# Copiamos los archivos de dependencias
+# Copiar archivos de dependencias
 COPY package*.json ./
-RUN npm install
 
-# Copiamos el resto del código del proyecto Angular
+# Instalar dependencias
+RUN npm ci
+
+# Copiar el código del proyecto
 COPY . .
 
-# Compilamos para producción (genera la carpeta dist/)
-RUN npm run build --configuration=production
+# Compilar Angular para producción
+RUN npm run build -- --configuration=production
 
-# Usamos Nginx para servir los archivos estáticos ya compilados
+# ETAPA 2: Servidor web Nginx
 FROM nginx:alpine
 
-# Copiamos los archivos compilados desde la etapa anterior a la ruta pública de Nginx
-COPY --from=build /app/dist/mi-practica-docker /usr/share/nginx/html
+# Copiar archivos compilados de Angular
+COPY --from=build /app/dist/mi-practica-docker/browser /usr/share/nginx/html
 
-# Exponemos el puerto 80
+# Puerto del servidor web
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
